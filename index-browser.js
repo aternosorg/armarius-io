@@ -21,7 +21,11 @@ export { default as NativeStreamDataProcessor } from "./src/DataProcessor/Native
 export { default as ArrayBufferIO } from "./src/IO/ArrayBufferIO.js";
 export { default as BlobIO } from "./src/IO/BlobIO.js";
 export { default as DataStream } from "./src/IO/DataStream.js";
+export { default as BufferedIO } from "./src/IO/BufferedIO.js";
 export { default as IO } from "./src/IO/IO.js";
+
+// IO/Buffer
+export { default as ReadWriteBuffer } from "./src/IO/Buffer/ReadWriteBuffer.js";
 
 // Util
 export { default as BigInt } from "./src/Util/BigInt.js";
