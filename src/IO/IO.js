@@ -280,5 +280,12 @@ export default class IO extends DataStream {
     getFinalLength() {
         return this.byteLength;
     }
+
+    /**
+     * @return {number}
+     */
+    getOffset() {
+        return this.offset;
+    }
 }
 
