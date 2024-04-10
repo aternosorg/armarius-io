@@ -9,5 +9,15 @@ export default class FflateDeflateDataProcessor extends FflateDataProcessor {
         this.flate = new Deflate();
         this.flate.ondata = this.onData.bind(this);
     }
+
+    /**
+     * @inheritDoc
+     */
+    push(data, final) {
+        super.push(data, final);
+        if (!final) {
+            this.flate.flush();
+        }
+    }
 }
 
