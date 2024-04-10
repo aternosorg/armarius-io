@@ -1,6 +1,6 @@
 {
   "name": "armarius-io",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "IO and compression library for Armarius",
   "repository": "github:aternosorg/armarius-io",
   "type": "module",

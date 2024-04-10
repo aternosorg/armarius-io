@@ -8,4 +8,13 @@ export default class NativeDeflateDataProcessor extends NativeStreamDataProcesso
         // noinspection JSUnresolvedFunction
         return new CompressionStream('deflate-raw');
     }
+
+    /**
+     * @inheritDoc
+     */
+    push(data, final) {
+        if (!final) {
+            this.flate.flush();
+        }
+    }
 }
