@@ -81,7 +81,6 @@ export default class DataProcessorChunkReader {
         this.closed = true;
         if (this.reading) {
             return new Promise(resolve => {
-                console.log('Schedule close');
                 this.closePromises.push(resolve);
             });
         }
