@@ -1,3 +1,5 @@
+import {asyncDispose} from "../Util/symbols.js";
+
 /**
  * @interface
  */
@@ -38,5 +40,9 @@ export default class DataStream {
      */
     async reset() {
         return this;
+    }
+
+    async [asyncDispose]() {
+
     }
 }

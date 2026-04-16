@@ -1,4 +1,5 @@
 import BufferedIO from "./BufferedIO.js";
+import {asyncDispose} from "../Util/symbols.js";
 
 export default class NodeFileIO extends BufferedIO {
     /** @type {FileHandle} */ fileHandle;
@@ -73,5 +74,10 @@ export default class NodeFileIO extends BufferedIO {
         await super.flush();
         await this.fileHandle.sync();
         return this;
+    }
+
+    async [asyncDispose]() {
+        await super[asyncDispose]();
+        await this.fileHandle.close();
     }
 }

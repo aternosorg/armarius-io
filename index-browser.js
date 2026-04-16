@@ -24,6 +24,11 @@ export { default as DataStream } from "./src/IO/DataStream.js";
 export { default as BufferedIO } from "./src/IO/BufferedIO.js";
 export { default as IO } from "./src/IO/IO.js";
 
+// IO/FileSystem
+export { default as FileHandleInterface } from "./src/IO/FileSystem/FileHandleInterface.js";
+export { default as StatInterface } from "./src/IO/FileSystem/StatInterface.js";
+export { default as Stat } from "./src/IO/FileSystem/Stat.js";
+
 // IO/Buffer
 export { default as ReadWriteBuffer } from "./src/IO/Buffer/ReadWriteBuffer.js";
 
@@ -32,3 +37,4 @@ export { default as BigInt } from "./src/Util/BigInt.js";
 export { default as BigIntUtils } from "./src/Util/BigIntUtils.js";
 export { default as BufferUtils } from "./src/Util/BufferUtils.js";
 export { default as CRC32 } from "./src/Util/CRC32.js";
+export * as symbols from "./src/Util/symbols.js";
