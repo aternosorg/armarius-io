@@ -119,4 +119,11 @@ export default class NodeFileHandle extends FileHandleInterface {
             stat.ctime
         );
     }
+
+    /**
+     * @returns {URL}
+     */
+    getUrl() {
+        return this.url;
+    }
 }

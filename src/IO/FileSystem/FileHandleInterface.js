@@ -60,6 +60,13 @@ export default class FileHandleInterface {
 
     }
 
+    /**
+     * @return {URL}
+     */
+    getUrl() {
+
+    }
+
     async [asyncDispose]() {
 
     }
