@@ -42,7 +42,7 @@ export default class NodeFileHandle extends FileHandleInterface {
      */
     async createChildDirectory(relativePath) {
         let url = this.getRelativePath(relativePath, true);
-        await fs.promises.mkdir(url);
+        await fs.promises.mkdir(url, {recursive: true});
         return new this.constructor(url);
     }
 

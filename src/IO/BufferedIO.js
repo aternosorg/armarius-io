@@ -1,6 +1,7 @@
 import IO from "./IO.js";
 import ReadWriteBuffer from "./Buffer/ReadWriteBuffer.js";
 import BigIntUtils from "../Util/BigIntUtils.js";
+import {asyncDispose} from "../Util/symbols.js";
 
 /**
  * @abstract
@@ -133,5 +134,10 @@ export default class BufferedIO extends IO {
     async flush() {
         await this.writeOutBuffer();
         return this;
+    }
+
+    async [asyncDispose]() {
+        await this.flush();
+        await super[asyncDispose]();
     }
 }

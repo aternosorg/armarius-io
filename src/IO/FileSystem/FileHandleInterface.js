@@ -47,6 +47,9 @@ export default class FileHandleInterface {
     }
 
     /**
+     * Create a child directory with the given relative path and return its handle.
+     * This will create the child path recursively if it does not exist.
+     *
      * @param {string} relativePath
      * @returns {Promise<FileHandleInterface>}
      * @abstract
