@@ -1,3 +1,5 @@
+import {asyncDispose} from "../../Util/symbols.js";
+
 export default class FileHandleInterface {
     /**
      * Open the file for reading and/or writing.
@@ -58,7 +60,7 @@ export default class FileHandleInterface {
 
     }
 
-    async [Symbol.asyncIterator]() {
+    async [asyncDispose]() {
 
     }
 }
