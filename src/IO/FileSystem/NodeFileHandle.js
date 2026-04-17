@@ -4,6 +4,11 @@ import * as fs from "node:fs";
 import Stat from "./Stat.js";
 import NodeFileIO from "../NodeFileIO.js";
 
+/**
+ * A simple file system implementation based on Node's fs/promises API.
+ * This implementation is not safe against file system races. For cases where that is a concern,
+ * a custom implementation of the FileHandle interface should be used.
+ */
 export default class NodeFileHandle extends FileHandleInterface {
     /** @type {URL} */ url;
 
