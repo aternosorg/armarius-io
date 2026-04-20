@@ -62,6 +62,7 @@ export default class FileHandleInterface {
 
     /**
      * @return {URL}
+     * @abstract
      */
     getUrl() {
 
