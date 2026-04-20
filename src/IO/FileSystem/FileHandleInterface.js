@@ -6,6 +6,9 @@ export default class FileHandleInterface {
      * If the file is a directory, an error is thrown.
      * If the file does not exist and is opened for writing, it is created.
      *
+     * The returned IO object must stay usable until its dispose method is called.
+     * Disposing of this file handle must not dispose of the IO object.
+     *
      * @param {boolean} readable
      * @param {boolean} writable
      * @returns {Promise<IO>}
