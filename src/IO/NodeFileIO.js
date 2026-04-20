@@ -1,8 +1,31 @@
 import BufferedIO from "./BufferedIO.js";
 import {asyncDispose} from "../Util/symbols.js";
+import * as fs from "node:fs";
 
 export default class NodeFileIO extends BufferedIO {
     /** @type {FileHandle} */ fileHandle;
+
+    /**
+     * @param {import("node:fs").PathLike} path
+     * @param {string|number} flags
+     * @param {import("node:fs").Mode} mode
+     * @returns {Promise<NodeFileIO>}
+     */
+    static async open(path, flags = "r", mode = 0o666) {
+        let fd = await fs.promises.open(path, flags, mode);
+        let stats;
+        try {
+            stats = await fd.stat();
+        } catch (e) {
+            await fd.close();
+            throw e;
+        }
+        if (stats.isDirectory() || !stats.isFile()) {
+            await fd.close();
+            throw new Error("Cannot open directory as IO");
+        }
+        return new this(fd, 0, stats.size);
+    }
 
     constructor(fileHandle, offset, size) {
         super();

@@ -29,6 +29,15 @@ afterAll(async () => {
     await fs.promises.rm(basePath, {recursive: true});
 });
 
+test('Open file', async () => {
+    let io = await NodeFileIO.open(new URL(basePath + 'test4.bin', import.meta.url), 'w+');
+    expect(io.byteLength).toBe(0);
+
+    await io.writeAt(0, new Uint8Array([1, 2, 3, 4]));
+    let result = await io.readAt(0, 4, true);
+    expect(result).toEqual(new Uint8Array([1, 2, 3, 4]));
+});
+
 test('Read data at offset', async () => {
     let io = new NodeFileIO(file1, 0, fileSize);
     expect(await io.readAt(0, 4, true))

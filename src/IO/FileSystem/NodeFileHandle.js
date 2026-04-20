@@ -94,14 +94,7 @@ export default class NodeFileHandle extends FileHandleInterface {
         } else if (writable) {
             flags = fs.constants.O_WRONLY | fs.constants.O_CREAT;
         }
-        let fd = await fs.promises.open(this.url, flags);
-        let stat = await fd.stat();
-        if (stat.isDirectory()) {
-            await fd.close();
-            throw new Error(`Cannot open directory "${this.url.pathname}" for reading or writing.`);
-        }
-
-        return new NodeFileIO(fd, 0, stat.size);
+        return await NodeFileIO.open(this.url, flags);
     }
 
     /**
