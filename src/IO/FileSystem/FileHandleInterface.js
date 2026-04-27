@@ -77,34 +77,6 @@ export default class FileHandleInterface {
     }
 
     /**
-     * @param {string} path
-     * @returns {string}
-     */
-    normalizePath(path) {
-        let leadingSlash = path.startsWith("/");
-        let trailingSlash = path.endsWith("/") && path.length > 1;
-        let parts = path.split("/");
-        let parentSteps = [];
-        let result = [];
-        for (let part of parts) {
-            if (part === "" || part === ".") {
-                continue;
-            }
-            if (part === "..") {
-                if (result.length === 0) {
-                    parentSteps.push("..");
-                } else {
-                    result.pop();
-                }
-                continue;
-            }
-            result.push(part);
-        }
-        result = parentSteps.concat(result);
-        return (leadingSlash ? "/" : "") + result.join("/") + (trailingSlash ? "/" : "");
-    }
-
-    /**
      * @param {string} relativePath
      * @param {?boolean} trailingSlash
      * @returns {URL}
