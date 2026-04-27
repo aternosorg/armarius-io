@@ -1,4 +1,5 @@
 import {asyncDispose} from "../../Util/symbols.js";
+import Path from "../../Util/Path.js";
 
 export default class FileHandleInterface {
     /**
@@ -109,9 +110,12 @@ export default class FileHandleInterface {
      * @returns {URL}
      */
     getRelativePath(relativePath, trailingSlash = null) {
-        let normalized = this.normalizePath(relativePath);
+        let normalized = Path.normalize(relativePath);
         if (normalized.startsWith('..')) {
             throw new Error(`Relative path "${relativePath}" is outside of the root directory.`);
+        }
+        if (normalized.startsWith('/')) {
+            throw new Error(`Relative path "${relativePath}" must not start with a slash.`);
         }
         if (trailingSlash === true && !normalized.endsWith("/")) {
             normalized += "/";

@@ -4,10 +4,6 @@ export default class Path {
      * @return {string}
      */
     static normalize(path) {
-        if (typeof path !== 'string') {
-            throw new TypeError('path must be a string');
-        }
-
         const startSlash = path.startsWith('/');
         const endSlash = path.length > 1 && path.endsWith('/');
 
@@ -41,7 +37,6 @@ export default class Path {
         let out;
         if (startSlash) {
             out = '/' + finalParts.join('/');
-            if (out === '') out = '/';
         } else {
             out = finalParts.length ? finalParts.join('/') : '.';
         }
