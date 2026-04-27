@@ -37,4 +37,5 @@ export { default as BigInt } from "./src/Util/BigInt.js";
 export { default as BigIntUtils } from "./src/Util/BigIntUtils.js";
 export { default as BufferUtils } from "./src/Util/BufferUtils.js";
 export { default as CRC32 } from "./src/Util/CRC32.js";
+export { default as Path } from "./src/Util/Path.js";
 export * as symbols from "./src/Util/symbols.js";

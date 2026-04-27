@@ -21,28 +21,6 @@ export default class NodeFileHandle extends FileHandleInterface {
     }
 
     /**
-     * @param {string} relativePath
-     * @param {boolean} trailingSlash
-     * @returns {URL}
-     */
-    getRelativePath(relativePath, trailingSlash = false) {
-        let normalized = pathModule.normalize(relativePath);
-        if (normalized.startsWith('..')) {
-            throw new Error(`Relative path "${relativePath}" is outside of the root directory.`);
-        }
-        if (trailingSlash && !normalized.endsWith("/")) {
-            normalized += "/";
-        }
-
-        let url = this.url;
-        if (!url.pathname.endsWith("/")) {
-            url = new URL(url.href + "/");
-        }
-
-        return new URL(normalized, url);
-    }
-
-    /**
      * @inheritDoc
      */
     async createChildDirectory(relativePath) {
