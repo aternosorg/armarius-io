@@ -84,3 +84,15 @@ test('Extend file on write beyond buffer size', async () => {
     expect(result).toEqual(new Uint8Array([1, 2, 3, 4]));
     expect(io.byteLength).toBe(1028);
 });
+
+test("Support concurrent writes", async () => {
+    let io = new NodeFileIO(file3, 0, fileSize);
+    await Promise.all([
+        io.writeAt(1028, new Uint8Array([5, 6, 7, 8])),
+        io.writeAt(1032, new Uint8Array([9, 10, 11, 12]))
+    ]);
+    let result1 = await io.readAt(1028, 4, true);
+    let result2 = await io.readAt(1032, 4, true);
+    expect(result1).toEqual(new Uint8Array([5, 6, 7, 8]));
+    expect(result2).toEqual(new Uint8Array([9, 10, 11, 12]));
+});

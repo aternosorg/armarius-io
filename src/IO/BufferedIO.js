@@ -2,6 +2,7 @@ import IO from "./IO.js";
 import ReadWriteBuffer from "./Buffer/ReadWriteBuffer.js";
 import BigIntUtils from "../Util/BigIntUtils.js";
 import {asyncDispose} from "../Util/symbols.js";
+import Lock from "../Util/Lock/Lock.js";
 
 /**
  * @abstract
@@ -9,6 +10,7 @@ import {asyncDispose} from "../Util/symbols.js";
 export default class BufferedIO extends IO {
     /** @type {ReadWriteBuffer} */ readBuffer = new ReadWriteBuffer();
     /** @type {ReadWriteBuffer} */ writeBuffer = new ReadWriteBuffer();
+    /** @type {Lock} */ flushLock = new Lock();
 
     constructor() {
         super();
@@ -80,12 +82,17 @@ export default class BufferedIO extends IO {
      * @return {Promise<this>}
      */
     async writeOutBuffer() {
-        if (!this.writeBuffer.hasData()) {
+        let handle = await this.flushLock.lock(true);
+        try {
+            if (!this.writeBuffer.hasData()) {
+                return this;
+            }
+            await this.writeRaw(this.writeBuffer.getOffset(), this.writeBuffer.getData());
+            this.writeBuffer.clear();
             return this;
+        } finally {
+            handle.release();
         }
-        await this.writeRaw(this.writeBuffer.getOffset(), this.writeBuffer.getData());
-        this.writeBuffer.clear();
-        return this;
     }
 
     /**

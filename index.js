@@ -47,4 +47,6 @@ export { default as BigIntUtils } from "./src/Util/BigIntUtils.js";
 export { default as BufferUtils } from "./src/Util/BufferUtils.js";
 export { default as CRC32 } from "./src/Util/CRC32.js";
 export { default as Path } from "./src/Util/Path.js";
+export { default as Lock } from "./src/Util/Lock/Lock.js";
+export { default as LockHandle } from "./src/Util/Lock/LockHandle.js";
 export * as symbols from "./src/Util/symbols.js";
