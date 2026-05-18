@@ -95,9 +95,12 @@ export default class FileHandleInterface {
             normalized = normalized.slice(0, -1);
         }
 
+        normalized = normalized.split('/').map(p => encodeURIComponent(p)).join('/');
+
         let url = this.getUrl();
         if (!url.pathname.endsWith("/")) {
-            url = new URL(url.href + "/");
+            url = new URL(url);
+            url.pathname += "/";
         }
 
         return new URL(normalized, url);

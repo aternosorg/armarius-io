@@ -30,7 +30,7 @@ afterAll(async () => {
 });
 
 test('Open file', async () => {
-    let io = await NodeFileIO.open(new URL(basePath + 'test4.bin', import.meta.url), 'w+');
+    await using io = await NodeFileIO.open(new URL(basePath + 'test4.bin', import.meta.url), 'w+');
     expect(io.byteLength).toBe(0);
 
     await io.writeAt(0, new Uint8Array([1, 2, 3, 4]));

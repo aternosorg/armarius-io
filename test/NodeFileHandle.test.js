@@ -4,6 +4,7 @@ import * as os from "node:os";
 import {NodeFileHandle} from "../index.js";
 import {pathToFileURL} from "node:url";
 import {asyncDispose} from "../src/Util/symbols.js";
+import Path from "../src/Util/Path.js";
 
 let tempDir;
 let baseFileHandle;
@@ -12,23 +13,30 @@ const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder();
 
 beforeEach(async () => {
-    tempDir = pathToFileURL(await fs.promises.mkdtemp(os.tmpdir() + '/armarius-test-'));
+    tempDir = pathToFileURL(await fs.promises.mkdtemp(os.tmpdir() + '/armarius-test-') + '/');
     baseFileHandle = new NodeFileHandle(tempDir);
 });
 
 afterEach(async () => {
+    await baseFileHandle[asyncDispose]();
     await fs.promises.rm(tempDir, {recursive: true, force: true});
 });
 
 test("Get child", async () => {
     let childHandle = await baseFileHandle.getChild("child/path/");
-    expect(childHandle.url).toEqual(new URL("/child/path/", tempDir));
+    expect(childHandle.url.toString()).toEqual(new URL("child/path/", tempDir).toString());
+    expect(await childHandle.exists()).toBe(false);
+});
+
+test("Get child correctly handles URI special chars", async () => {
+    let childHandle = await baseFileHandle.getChild("http:child");
+    expect(childHandle.url.toString()).toEqual(new URL("http%3Achild", tempDir).toString());
     expect(await childHandle.exists()).toBe(false);
 });
 
 test('Create child directory', async () => {
     let childHandle = await baseFileHandle.createChildDirectory("child/path/");
-    expect(childHandle.url).toEqual(new URL("/child/path/", tempDir));
+    expect(childHandle.url.toString()).toEqual(new URL("child/path/", tempDir).toString());
     expect(await childHandle.exists()).toBe(true);
     let stat = await childHandle.stat();
     expect(stat.isDirectory()).toBe(true);
@@ -47,7 +55,7 @@ test("Get children", async () => {
     for await (let child of baseFileHandle.getChildren()) {
         children.push(child);
     }
-    expect(children.map(c => c.url)).toEqual([child1.url, child2.url]);
+    expect(children.map(c => Path.normalize(c.getUrl().pathname) + "/").sort()).toEqual([Path.normalize(child1.getUrl().pathname), Path.normalize(child2.getUrl().pathname)]);
 });
 
 test("Open readable fails if not exists", async () => {
@@ -57,7 +65,7 @@ test("Open readable fails if not exists", async () => {
 
 test("Open writable creates file", async () => {
     let child = await baseFileHandle.getChild("child");
-    let fd = await child.open(false, true);
+    await using fd = await child.open(false, true);
     await fd.write(textEncoder.encode("Hello, world!"));
     await fd[asyncDispose]();
     expect(await child.exists()).toBe(true);
@@ -67,7 +75,7 @@ test("Open writable creates file", async () => {
 
 test("Open readable on existing file", async () => {
     let child = await baseFileHandle.getChild("child");
-    let fd = await child.open(false, true);
+    await using fd = await child.open(false, true);
     await fd.write(textEncoder.encode("Hello, world!"));
     await fd[asyncDispose]();
 
@@ -79,7 +87,7 @@ test("Open readable on existing file", async () => {
 
 test("Open readable and writable", async () => {
     let child = await baseFileHandle.getChild("child");
-    let fd = await child.open(true, true);
+    await using fd = await child.open(true, true);
     await fd.write(textEncoder.encode("Hello, world!"));
     await fd.seek(0);
     let data = await fd.read(13);
@@ -93,7 +101,7 @@ test("Open directory fails", async () => {
 
 test("Stat file", async () => {
     let child = await baseFileHandle.getChild("child");
-    let fd = await child.open(false, true);
+    await using fd = await child.open(false, true);
     await fd.write(textEncoder.encode("Hello, world!"));
     await fd[asyncDispose]();
 

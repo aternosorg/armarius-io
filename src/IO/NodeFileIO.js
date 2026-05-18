@@ -95,12 +95,18 @@ export default class NodeFileIO extends BufferedIO {
      */
     async flush() {
         await super.flush();
-        await this.fileHandle.sync();
+        if (this.fileHandle) {
+            await this.fileHandle.sync();
+        }
         return this;
     }
 
     async [asyncDispose]() {
         await super[asyncDispose]();
-        await this.fileHandle.close();
+        let fileHandle = this.fileHandle;
+        this.fileHandle = null;
+        if (fileHandle) {
+            await fileHandle.close();
+        }
     }
 }
