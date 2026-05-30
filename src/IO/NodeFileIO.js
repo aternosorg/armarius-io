@@ -22,7 +22,7 @@ export default class NodeFileIO extends BufferedIO {
         }
         if (stats.isDirectory() || !stats.isFile()) {
             await fd.close();
-            throw new Error("Cannot open directory as IO");
+            throw new Error("Cannot open a directory as IO");
         }
         return new this(fd, 0, stats.size);
     }
@@ -73,7 +73,7 @@ export default class NodeFileIO extends BufferedIO {
      * @inheritDoc
      */
     async readRaw(offset, length) {
-        let data = Buffer.alloc(length);
+        let data = Buffer.allocUnsafe(length);
         let {bytesRead} = await this.fileHandle.read({
             buffer: data,
             length: length,

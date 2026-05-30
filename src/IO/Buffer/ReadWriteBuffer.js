@@ -1,4 +1,6 @@
 export default class ReadWriteBuffer {
+    static EMPTY = new Uint8Array(0);
+
     /** @type {number} */ offset= 0;
     /** @type {?Uint8Array} */ data = null;
     /** @type {?DataView} */ dataView= null;
@@ -36,7 +38,7 @@ export default class ReadWriteBuffer {
      * @return {Uint8Array}
      */
     getData() {
-        return this.data ?? new Uint8Array(0);
+        return this.data ?? ReadWriteBuffer.EMPTY;
     }
 
     /**

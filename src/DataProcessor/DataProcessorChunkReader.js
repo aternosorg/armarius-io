@@ -2,6 +2,7 @@ import CRC32 from '../Util/CRC32.js';
 import BigInt from "../Util/BigInt.js";
 
 export default class DataProcessorChunkReader {
+    static EMPTY = new Uint8Array(0);
     /** @type {DataStream} */ dataStream;
     /** @type {boolean} */ eof = false;
     /** @type {boolean} */ closed = false;
@@ -25,7 +26,7 @@ export default class DataProcessorChunkReader {
      */
     async getChunk(length) {
         if (this.closed) {
-            return new Uint8Array(0);
+            return DataProcessorChunkReader.EMPTY;
         }
         if (this.reading) {
             throw new Error('Simultaneous read not supported');
@@ -35,7 +36,7 @@ export default class DataProcessorChunkReader {
         let chunk = await this.dataStream.pull(length);
         if (!chunk) {
             this.eof = true;
-            chunk = new Uint8Array(0);
+            chunk = DataProcessorChunkReader.EMPTY;
         }
 
         this.size += BigInt(chunk.byteLength);

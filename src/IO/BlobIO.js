@@ -45,6 +45,7 @@ export default class BlobIO extends BufferedIO {
                 resolve(new Uint8Array(res));
             };
             this.reader.onerror = () => {
+                this.blocked = false;
                 reject(this.reader.error || new Error('An unknown error occurred while trying to read from Blob'));
             };
             this.reader.readAsArrayBuffer(this.blob.slice(this.byteOffset + offset, this.byteOffset + offset + length));

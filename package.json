@@ -6,8 +6,15 @@
   "type": "module",
   "main": "index.js",
   "browser": "index-browser.js",
+  "exports": {
+    ".": {
+      "browser": "./index-browser.js",
+      "default": "./index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --rootDir ./test"
+    "test": "node --experimental-vm-modules --enable-source-maps ./node_modules/jest/bin/jest.js --rootDir ./test"
   },
   "author": "Kurt Thiemann <kurt@aternos.org>",
   "license": "MIT",

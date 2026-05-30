@@ -1,7 +1,9 @@
 export default class BufferUtils {
+    static EMPTY = new Uint8Array(0);
+
     static concatBuffers(chunks) {
         if (!chunks.length) {
-            return new Uint8Array(0);
+            return BufferUtils.EMPTY;
         }
         if (chunks.length === 1) {
             return chunks[0];
