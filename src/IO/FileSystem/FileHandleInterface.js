@@ -83,7 +83,7 @@ export default class FileHandleInterface {
      */
     getRelativePath(relativePath, trailingSlash = null) {
         let normalized = Path.normalize(relativePath);
-        if (normalized.startsWith('..')) {
+        if (normalized.startsWith('../') || normalized === "..") {
             throw new Error(`Relative path "${relativePath}" is outside of the root directory.`);
         }
         if (normalized.startsWith('/')) {
